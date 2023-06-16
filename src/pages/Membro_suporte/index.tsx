@@ -47,8 +47,8 @@ function ListagemUsuario() {
   return (
     <div className="flex flex-wrap flex-row">
       <Menu></Menu>
-      <div className="p-10 xl:ml-64 sm:ml-0 md:ml-52 flex items-center flex-col">
-      <div className="flex p-10 w-full items-center  flex-col">
+      <div  className="mt-16 w-full flex-1">
+     <div className="p-10 xl:ml-64 sm:ml-0 md:ml-52 flex items-center flex-col">
         <h1 className="text-3xl my-2 font-black">Listagem Usuários</h1>
         { 
         usuarios && !loading ?(

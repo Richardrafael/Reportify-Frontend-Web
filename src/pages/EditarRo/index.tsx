@@ -256,8 +256,8 @@ const EditaRos = () => {
     <Menu/>
     </div>
     {/* {conteudo fica aqui} */}
-    <div className="p-10 xl:ml-64 sm:ml-0 md:ml-52 flex items-center flex-col">
-      <div className="p-10 flex items-center flex-col">
+    <div  className="mt-16 w-full flex-1">
+     <div className="p-10 xl:ml-64 sm:ml-0 md:ml-52 flex items-center flex-col">
         <ToastContainer
         position="bottom-right"
         autoClose={3000}

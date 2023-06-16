@@ -125,8 +125,8 @@ console.log(errorMessage)
 
 
     return(
-      <div className="mt-16 w-full flex ">
-        <div className="flex p-10 w-full items-center  flex-col">
+      <div  className="mt-16 w-full flex-1">
+      <div className="p-10 xl:ml-64 sm:ml-0 md:ml-60 flex items-center flex-col">
         { 
           selectedSecondButton && usuario?.nivel === "admin" ?
           <>

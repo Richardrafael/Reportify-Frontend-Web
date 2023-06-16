@@ -1,5 +1,4 @@
-
-import Home from '../../pages/Home'
+import Home from "../../pages/Home";
 import {Routes , Route, Navigate}  from "react-router-dom";
 import CadastroRo from '../../pages/CadastroRo';
 import TabelaRo from '../../pages/TabelaRO';

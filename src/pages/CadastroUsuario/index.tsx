@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Menu from "../../components/menus";
-import "./cadastro_usuario.css"
 import Loader from "../../components/loader";
 import api from "../../services/api";
 import { Navigate } from "react-router-dom";
@@ -74,7 +73,7 @@ return(
     {/* {conteudo fica aqui} */}
 
     <div id="conteusdo" className="mt-16 w-full flex-1">
-      <div className="p-10 flex items-center flex-col">
+      <div className="p-10 xl:ml-64 sm:ml-0 md:ml-52 flex items-center flex-col">
         <ToastContainer
         position="bottom-right"
         autoClose={3000}

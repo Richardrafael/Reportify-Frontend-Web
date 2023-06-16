@@ -36,7 +36,7 @@ function Notificacoes () {
       </div>
       {notificacoes && !loading && notificacoes.length < 1 && <div>Não há nenhuma notificação</div>}
       <div id="conteudo2">
-        {notificacoes && notificacoes.map((notification : any, index : any) => (
+        {notificacoes && notificacoes.map((notification :any, index : any) => (
           <div id="notificacoes" key={index}>
             <h2>{notification.mensagem}</h2>
             <h2>{notification.data.toLocaleString()}</h2>

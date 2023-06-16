@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Menu from "../../components/menus";
-import "./editar_usario.css"
 import Loader from "../../components/loader";
 import api from "../../services/api";
 import { ToastContainer, toast } from 'react-toastify';

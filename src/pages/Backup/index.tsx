@@ -30,8 +30,8 @@ function Backup() {
   return (
     <div className="flex flex-wrap flex-row">
       <Menu></Menu>
-      <div id="conteudo" className="mt-16  bg-white flex-1 ">
-        <div className="p-10 flex items-center flex-col">
+      <div className="mt-16  bg-white flex-1 ">
+        <div className="p-10 xl:ml-64 sm:ml-0 md:ml-52 flex items-center flex-col">
           <h1 className="text-2xl">Este site foi desenvolvido para criar o backup do banco de dados de mês em mês automaticamente.</h1>
           <h1 className="text-2xl">Porém, o botão abaixo força a criação de um arquivo de backup do banco de dados atual.</h1>
           <button onClick={forceBackup} className='w-40 py-3 rounded-xl text-center  mb-10 mt-5 ring-1 hover:bg-secondary cursor-pointer ring-black-300 shadow-2xl' id='botao_backup'>Forçar Backup</button>

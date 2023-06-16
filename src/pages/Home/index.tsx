@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Menu from "../../components/menus";
-import "./style.css"
 import { FaEdit } from "react-icons/fa";
 import "../../styles/global.css";
 import { useAuth } from "../../contexts/auth";
@@ -46,7 +45,7 @@ function Home() {
   return (
     <div className="flex flex-wrap flex-row">
       <Menu></Menu>
-      <div id="conteusdo" className="mt-16 w-full flex ">
+      <div className="p-10 xl:ml-64 sm:ml-0 md:ml-52 flex items-center flex-col">
         <div className="flex p-10 w-full items-center  flex-col">
         <h1 className='text-3xl my-2 font-black'>Meus Ros</h1>
         <div className="flex w-full max-h-80  rounded-xl overflow-auto border-y border-slate-600 shadow-xl my-2 justify-center">

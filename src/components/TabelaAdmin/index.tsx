@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/global.css";
 import "./tabela.css"
 import api from "../../services/api";
@@ -10,37 +10,43 @@ import { useAuth } from "../../contexts/auth";
 import { Link } from "react-router-dom";
 
 
+// interface data {
+//   data : object | null  
+// }
 
+interface ro {
+  map(arg0: (ro: any, i: any) => import("react/jsx-runtime").JSX.Element): import("react").ReactNode;
+  length: number;
+ }
 
 function Tabela() {
     const { usuario } = useAuth();
     const [input, setInput] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
-    const [ros, setRos] = useState();
-    const [allRos, setAllRos] = useState();
-    const [myRos, setMyRos] = useState();
+    const [ros, setRos] = useState<ro[]>();
+    const [allRos, setAllRos] = useState<ro[]>();
+    const [myRos, setMyRos] = useState<ro[]>();
     const [loading, setLoading] = useState(true);
     const [selectedFirstButton, setSelectedFirstButton] = useState(false);
     const [selectedSecondButton, setSelectedSecondButton] = useState(true);
     const [esconde, setEsconde] = useState(true);
-    const inputRef = useRef(null);
 
 
 
 useEffect(() => {
     (async () => {
       try {
-        if (usuario.perfil == "admin") {
-          const response = await api.get('/ro');
+        if (usuario?.perfil == "admin") {
+          const response : any = await api.get('/ro');
           setAllRos(response.data);
-          const response2 = await api.get('/ro/atribuido/' + usuario._id);
+          const response2 : any = await api.get('/ro/atribuido/' + usuario?._id);
           setMyRos(response2.data);
         } else {
-          const response = await api.get('/ro/relator/' + usuario._id);
+          const response : any = await api.get('/ro/relator/' + usuario?._id);
           setRos(response.data);
         }
 
-      } catch (response) {
+      } catch (response : any) {
         setErrorMessage(response.data.msg);
       }
 
@@ -52,11 +58,11 @@ useEffect(() => {
     setLoading(true)
     setInput('');
     try{
-      if (usuario.perfil == "admin") {
-        const response = await api.get('/ro');
+      if (usuario?.perfil == "admin") {
+        const response : any = await api.get('/ro');
         setAllRos(response.data);
 
-        const response2 = await api.get('/ro/atribuido/' + usuario._id);
+        const response2 : any = await api.get('/ro/atribuido/' + usuario._id);
         setMyRos(response2.data);
 
         if (selectedFirstButton) {
@@ -66,10 +72,10 @@ useEffect(() => {
         }
       } else {
         setSelectedFirstButton(false);
-        const response = await api.get('/ro/relator/' + usuario._id);
+        const response : any = await api.get('/ro/relator/' + usuario?._id);
         setRos(response.data);
       }
-    } catch (response) {
+    } catch (response : any) {
       setErrorMessage(response.data.msg);
     }
     setLoading(false)
@@ -80,10 +86,10 @@ useEffect(() => {
   async function pesquisar() {
     setLoading(true)
     try {
-      if (usuario.perfil == "admin") {
-          const response = await api.get('/ro/search/' + input);
+      if (usuario?.perfil == "admin") {
+          const response  : any = await api.get('/ro/search/' + input);
           setAllRos(response.data);
-          const response2 = await api.get('/ro/atribuido/search/' + usuario._id + '/' + input);
+          const response2 : any = await api.get('/ro/atribuido/search/' + usuario._id + '/' + input);
           setMyRos(response2.data)
           if (selectedFirstButton) {
             setRos(response.data);
@@ -91,13 +97,13 @@ useEffect(() => {
             setRos(response2.data);
           }
       } else {
-        const response = await api.get('/ro/relator/search/' + usuario._id + '/' + input);
+        const response : any = await api.get('/ro/relator/search/' + usuario?._id + '/' + input);
 
         if (response.data) {
           setRos(response.data)
         }
       }
-    } catch (response) {
+    } catch (response : any) {
       setErrorMessage(response.data.msg);
     }
     setEsconde(!esconde)
@@ -109,23 +115,20 @@ useEffect(() => {
     setSelectedFirstButton(!selectedFirstButton)
     setSelectedSecondButton(!selectedSecondButton)
   }
-  function escondebusca() {
-    setEsconde(!esconde)
-  }
 
   function changeToMyTasks() {
     setSelectedFirstButton(!selectedFirstButton)
     setSelectedSecondButton(!selectedSecondButton)
   }
 
-
+console.log(errorMessage)
 
 
     return(
       <div id="conteusdo" className="mt-16 w-full flex ">
         <div className="flex p-10 w-full items-center  flex-col">
         { 
-          selectedSecondButton && usuario.nivel === "admin" ?
+          selectedSecondButton && usuario?.nivel === "admin" ?
           <>
               <h1 className='text-3xl my-2 font-black'>Ros</h1>
           </> :
@@ -148,7 +151,7 @@ useEffect(() => {
         </div>
           </div>
           {  
-         usuario.perfil == 'admin' ?
+         usuario?.perfil == 'admin' ?
           <>
             <div className="flex w-full max-h-80  rounded-xl overflow-auto border-y border-slate-600 shadow-xl my-2 justify-center">
               
@@ -167,7 +170,7 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody >
-                {allRos.map((ro , i)=> (
+                {allRos.map((ro : any , i : any)=> (
                   <tr className={i % 2 === 0 ? 'bg-gray-200' : 'bg-white'} key={ro._id}>
                   <td className="border border-slate-700 tex p-1">
                     <div className="flex justify-center">
@@ -240,7 +243,7 @@ useEffect(() => {
     </thead>
     <tbody >
        {
-       myRos.map((ro , i)=> (
+       myRos.map((ro : any , i : any)=> (
         <tr className={i % 2 === 0 ? 'bg-gray-200' : 'bg-white'} key={ro._id}>
         <td className="border border-slate-700 tex p-1">
           <div className="flex justify-center">
@@ -324,7 +327,7 @@ useEffect(() => {
          <div className="flex w-full max-h-80  rounded-xl overflow-auto border-y border-slate-600 shadow-xl my-2 justify-center">
           { ros && !loading ?
           <> { ros.length == 0 ?  <h1 className="text-3xl text-red-800 font-black ">
-          {usuario.nome} você não posssui ros atribuidos
+          {usuario?.nome} você não posssui ros atribuidos
          </h1> :
                   
                   <table className="w-full   md:table-fixed table-fixed ">
@@ -338,7 +341,7 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody >
-                {ros.map((ro , i)=> (
+                {ros.map((ro:any , i:any)=> (
                   <tr className={i % 2 === 0 ? 'bg-gray-200' : 'bg-white'} key={ro._id}>
                   <td className="border border-slate-700 tex p-1">
                     <div className="flex justify-center">

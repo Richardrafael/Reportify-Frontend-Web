@@ -3,7 +3,6 @@ import Home from '../../pages/Home'
 import {Routes , Route, Navigate}  from "react-router-dom";
 import CadastroRo from '../../pages/CadastroRo';
 import TabelaRo from '../../pages/TabelaRO';
-import MembroSuporte from '../../pages/Membro_suporte';
 import CadastroUsuario from '../../pages/CadastroUsuario';
 import Contatos from '../../pages/Contatos';
 import Chat from '../../pages/Chat';

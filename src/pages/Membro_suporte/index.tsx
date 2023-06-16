@@ -1,32 +1,39 @@
 import { useEffect, useState } from "react";
 import Menu from "../../components/menus";
-import { useAuth } from "../../contexts/auth";
+// import { useAuth } from "../../contexts/auth";
 import "../../styles/global.css";
 import api from "../../services/api";
 import { FaEdit } from "react-icons/fa";
 import Loader_preto from "../../components/loader/loaderpreto";
-import { Link, Navigate } from "react-router-dom";
+import { Link,  } from "react-router-dom";
 // import { useState } from "react";
 
 
-function ListagemUsuario() {
-  const { signOut } = useAuth();
+ interface usa {
+ nome : string, 
+ empresa : string , 
+ email : string,
+ perfil : string 
+}
 
-  const [usuarios, setUsuarios] = useState()
-  const [input, setInput] = useState('');
+function ListagemUsuario() {
+  // const { signOut } = useAuth();
+
+  const [usuarios, setUsuarios] = useState<usa[]>()
+  // const [input, setInput] = useState('');
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
 
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get('/usuario');
+        const response : any = await api.get('/usuario');
 
         setUsuarios(response.data);
         setLoading(false)
-      } catch (response) {
-        setErrorMessage(response.data.msg);
+      } catch (response : any) {
+        console.log(response.data.msg);
       }
     })();
   }, []);
@@ -58,7 +65,7 @@ function ListagemUsuario() {
               </thead>
               <tbody >
                 {
-                  usuarios.map((usuario , i)=> (
+                  usuarios.map((usuario : any , i : any)=> (
                   <tr className={i % 2 === 0 ? 'bg-gray-200' : 'bg-white'} key={usuario._id}>
                   {/* <td className="border border-slate-700 tex p-1">
                     <div className="flex justify-center">

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Menu from "../../components/menus";
 import "./cadastro_usuario.css"
 import Loader from "../../components/loader";
 import api from "../../services/api";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,7 +17,7 @@ function CadastroUsuario () {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [perfil, setPerfil] = useState('cliente');
-  const [selectedPerfil, setSelectedPerfil] = useState('cliente');
+  // const [selectedPerfil, setSelectedPerfil] = useState('cliente');
   const [empresa, setEmpresa] = useState('');
   const [contato_empresa, setConato_empresa] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
@@ -32,12 +32,10 @@ function CadastroUsuario () {
   async function cadastrarUsuario() {
     setLoading(true);
     try {
-      const response = await api.post('/usuario', {nome, 
+        await api.post('/usuario', {nome, 
         email, perfil, empresa, contato_empresa })
-      
-      
       roni()
-    } catch (response) {
+    } catch (response : any) {
       if (response && response.data && response.data.msg) {
         setErrorMessage(response.data.msg);
         console.log(response.data.msg)

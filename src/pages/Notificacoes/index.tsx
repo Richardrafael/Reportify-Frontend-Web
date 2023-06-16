@@ -14,11 +14,11 @@ function Notificacoes () {
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get('/usuario/' + usuario._id);
+        const response : any = await api.get('/usuario/' + usuario?._id);
         console.log(response.data)
         setNotificacoes(response.data.notificacoes);
         setLoading(false)
-      } catch (response) {
+      } catch (response : any) {
         console.log(response.data.msg);
       }
     })();
@@ -36,7 +36,7 @@ function Notificacoes () {
       </div>
       {notificacoes && !loading && notificacoes.length < 1 && <div>Não há nenhuma notificação</div>}
       <div id="conteudo2">
-        {notificacoes && notificacoes.map((notification, index) => (
+        {notificacoes && notificacoes.map((notification : any, index : any) => (
           <div id="notificacoes" key={index}>
             <h2>{notification.mensagem}</h2>
             <h2>{notification.data.toLocaleString()}</h2>

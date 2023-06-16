@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import "../../styles/global.css";
 import "./lado.css"
-import { FaComment, FaBell, FaBars, FaTimes, FaUser } from 'react-icons/fa';
+import {  FaBell, FaBars, FaTimes, FaUser } from 'react-icons/fa';
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/auth";
 import api from '../../services/api';
@@ -11,8 +11,6 @@ import api from '../../services/api';
 function Menu() {
   const [open , setOpen] = useState(false)
   const { usuario, signOut } = useAuth();
-
-  const navigation = useNavigate();
 
   const isopen = () => {
     setOpen(!open)
@@ -29,7 +27,7 @@ function Menu() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/notificacao/'+ usuario._id);
+        const response : any = await api.get('/notificacao/'+ usuario?._id);
         const constanteBackend = response.data.numeroNotificacoes;
         setMostrarNotificacao(constanteBackend);
       } catch (error) {
@@ -45,7 +43,7 @@ function Menu() {
 
   const marcarNotificacao = async () => {
     try {
-      const response = await api.post('/notificacao/', {id:usuario._id});
+       await api.post('/notificacao/', {id:usuario?._id});
       // navigation('/notificacoes')
 
     } catch (error) {
@@ -60,7 +58,7 @@ function Menu() {
       <div className="bg-primary fixed h-16 w-screen flex items-center justify-center">
         <div className="bg-primary fixed h-16 w-11/12 flex items-center justify-between" > 
         <div>
-          <h1 className="text-3xl text-white">Olá {usuario.nome}</h1>
+          <h1 className="text-3xl text-white">Olá {usuario?.nome}</h1>
         </div>
         <div>
           <h1 className="text-3xl text-white" >Reportify</h1>
@@ -99,7 +97,7 @@ function Menu() {
       <div className="flex-1">
       <ul className="text-white flex flex-col flex-grow   p-4">
         <li className="">
-          <h1 className="text-3xl pl-2 text-white">Olá {usuario.nome}</h1>
+          <h1 className="text-3xl pl-2 text-white">Olá {usuario?.nome}</h1>
         </li>
         <li className="py-3 rounded-xl text-center hover:bg-secondary cursor-pointer mt-3 ring-1 ring-black-300 shadow-2xl">
           <Link to="/tabelaRo" className="text-gray-400 p-4 hover:text-white">Registro de Ocorrência</Link>

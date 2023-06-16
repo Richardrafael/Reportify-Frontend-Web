@@ -34,7 +34,7 @@ function Login() {
       await signIn(email, senha);
       navigate('/')
 
-    } catch (response) {
+    } catch (response : any) {
       setErrorMessage(response.data.msg);
     }
     setLoading(false);

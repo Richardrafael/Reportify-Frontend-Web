@@ -7,6 +7,12 @@ import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 
 
+
+interface tem{
+  url : string ,
+  _id : string
+}
+
 function RedefinirSenha() {
     const { id, firstTime } = useParams();
 
@@ -15,7 +21,7 @@ function RedefinirSenha() {
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('')
     const [termo, setTermo] = useState(false);
-    const [termoInfo, setTermoInfo] = useState();
+    const [termoInfo, setTermoInfo] = useState<tem>();
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [errorTermoMessage, setErrorTermoMessage] = useState('');
@@ -29,11 +35,11 @@ function RedefinirSenha() {
       useEffect(() => {
         (async () => {
           try {
-              const response = await api.get('/termo/');
+              const response : any = await api.get('/termo/');
 
               console.log(termoInfo)
               setTermoInfo(response.data)
-          } catch (response) {
+          } catch (response : any) {
             setErrorMessage(response.data.msg);
           }
         })();
@@ -47,10 +53,10 @@ function RedefinirSenha() {
           try {
             if (termo || firstTime === 'false') {
               if (firstTime === 'true') {
-                await api.post('/termo/accept', {usuario: id, versaoTermo: termoInfo._id});
+                await api.post('/termo/accept', {usuario: id, versaoTermo: termoInfo?._id});
               }
     
-              const response = await api.patch('/usuario/password/' + id, {senha, confirmarSenha});
+              const response : any = await api.patch('/usuario/password/' + id, {senha, confirmarSenha});
 
               setSenha('')
               setConfirmarSenha('')
@@ -58,7 +64,7 @@ function RedefinirSenha() {
             } else {
               setErrorTermoMessage('É necessário aceitar o termo.');
             }
-          } catch (response) {
+          } catch (response : any) {
             setErrorMessage(response.data.msg);
           }
         setLoading(false);

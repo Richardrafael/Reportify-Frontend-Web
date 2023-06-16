@@ -15,10 +15,10 @@ interface Perfil {
   value: string;
 }
 
-interface Empresa {
-  label: string;
-  value: string;
-}
+// interface Empresa {
+//   label: string;
+//   value: string;
+// }
 
 
 const EditarUsuario = () => {
@@ -38,7 +38,7 @@ const EditarUsuario = () => {
     { label: 'Cliente', value: 'cliente' },
   
   ];
-  const [selectedEmpresa, getSelectedEmpresa] = useState('empresa1');
+  // const [selectedEmpresa, getSelectedEmpresa] = useState('empresa1');
 
 
   const { _id } = useParams();
@@ -58,7 +58,7 @@ const EditarUsuario = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get('/usuario/'+_id);
+        const response:any = await api.get('/usuario/'+_id);
         
         setNome(response.data.nome);
         setEmail(response.data.email);
@@ -67,7 +67,7 @@ const EditarUsuario = () => {
         setContato(response.data.contato_empresa);
         // setSenha(response.data.senha);
         setLoading(false)
-      } catch (response) {
+      } catch (response : any) {
         setErrorMessage(response.data.msg);
       }
     })();
@@ -77,9 +77,9 @@ const EditarUsuario = () => {
   async function editarUser() {
     setLoading(true);
     try {
-      const response = await api.put('/usuario/'+_id , {nome, email, selectedPerfil, empresa, contato_empresa })
+      await api.put('/usuario/'+_id , {nome, email, selectedPerfil, empresa, contato_empresa })
       roni()
-    } catch (response) {
+    } catch (response: any) {
       setErrorMessage(response.data.msg);
     }
     setLoading(false);
@@ -170,7 +170,7 @@ const EditarUsuario = () => {
       name="perfil"
       value={selectedPerfil}
       className="border-b border-gray-400 focus:border-primary focus:outline-none px-2 py-0 flex-grow"
-      onChange={e => setPerfil(e.target.value)}
+      // onChange={e => setPerfil(e.target.value)}
       id="perfil"
       >
     <option disabled selected>

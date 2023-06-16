@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 // import RNFetchBlob from 'rn-fetch-blob';
 import Menu from '../../components/menus';
 import api from '../../services/api';
 import { useAuth } from '../../contexts/auth';
 import { Navigate, useParams } from 'react-router-dom';
-import LoaderRo from "../../components/loader/loaderRo";
+// import LoaderRo from "../../components/loader/loaderRo";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../../components/loader';
@@ -21,6 +21,7 @@ const EditaRos = () => {
     // const [loading1, setLoading1] = useState(true);
     
 
+
     const { _id } = useParams();
     const [descricao, setDescricao] = useState('');
     const [contrato, setContrato] = useState('');
@@ -34,7 +35,7 @@ const EditaRos = () => {
     const [equipPosicao, setEquipPosicao] = useState('');
     const [partNumber, setPartNumber] = useState('');
     const [serialNumber, setSerialNumber] = useState('');
-    const [procedTecnicos , SetProcedTecnicos] = useState('')
+    const [procedTecnicos ] = useState('')
     const [tituloOcorrencia, setTituloOcorrencia] = useState('');
     const [descricaoOcorrencia, setDescricaoOcorrencia] = useState('');
     const [nome, setNome] = useState('');
@@ -44,22 +45,22 @@ const EditaRos = () => {
     const [posGradRelator,setPosGradRelator] = useState('');
     const [fase, setFase] = useState('')
     const [update, setUpdate] =  useState(false)
-    const [melhoria, setMelhoria] = useState()
+    const [melhoria, setMelhoria] = useState<string | undefined>(undefined);
     const [categoria, setCategoria] = useState('')
     const [classificacao, setClassificacao] = useState('');
     const [ro, setRo] = useState([]);
-    const [isEditable, setIsEditable] = useState(false);
-    const [visible , setVisible] = useState(false)
-    const [visi , setVisi] = useState(false)
+    // const [isEditable, setIsEditable] = useState(false);
+    // const [visible , setVisible] = useState(false)
+    // const [visi , setVisi] = useState(false)
     // const [procedTecnicos, setProcedTecnicos] = useState('')
     const [defeito, setDefeito] = useState('')
     const [outros, setOutros] = useState('')
-    const [situacao, setSituacao] = useState('')
+    // const [situacao, setSituacao] = useState('')
     const [justificativaReclassificacao, setJustificativaReclassificacao] = useState('')
     const [validacaoFechamentoRo, setValidacaoFechamentoRo] = useState('')
     const [justificativaFechamento, setJustificativaFechamento] = useState('')
     // const [usuarios, setUsuarios] = useState()
-    const [idcolaboradorIACIT, setIdColaboradorIACIT] = useState()
+    const [idcolaboradorIACIT, setIdColaboradorIACIT] =useState<string | undefined>(undefined);
     const [errorMessage, setErrorMessage] = useState()
     const [usuarios, setUsuarios] = useState([])
 
@@ -97,7 +98,7 @@ const EditaRos = () => {
     useEffect(() => {
       (async () => {
         try {
-          const response = await api.get(`/ro/${_id}`);
+          const response : any = await api.get(`/ro/${_id}`);
           setRo(response.data);
           setTituloOcorrencia(response.data.tituloOcorrencia);
           setOrgao(response.data.orgao);
@@ -181,7 +182,7 @@ const EditaRos = () => {
           }
           
           setLoading(false)
-        } catch (response) {
+        } catch (response : any) {
            setErrorMessage(response.data)
         }
         setLoading(false)
@@ -194,10 +195,10 @@ const EditaRos = () => {
         try {
 
 
-        const response2 = await api.get('/usuario')
+        const response2 : any = await api.get('/usuario')
           setUsuarios(response2.data)
           console.log(response2.data)
-        } catch (response) {
+        } catch (response  : any) {
            setErrorMessage(response.data)
         }
         setLoading(false)
@@ -208,7 +209,7 @@ const EditaRos = () => {
       setLoading(true)
 
       try{
-        const response = await api.patch(`/ro/suporte/${_id}`,
+        await api.patch(`/ro/suporte/${_id}`,
         {
             categoria,
             fase, 
@@ -224,77 +225,14 @@ const EditaRos = () => {
           }, );
           roni()
           console.log(categoria + fase + idcolaboradorIACIT + classificacao )
-      }catch (response){
+      }catch (response : any){
         setErrorMessage(response.data)
       }
       setLoading(false);
 
     }
 
-     async function EditarRoa() {
-      setIsEditable(!isEditable);  
-      setVisible(!visible) 
-      setVisi(!visi)
-    }
-    async function ConfimarRo() {
-      setLoading(true)
-      try{
-        const response = await api.patch(`/ro/cliente/${_id}`,
-        {
-                  descricao,
-                  contrato,
-                  orgao,
-                  dataRegistro,
-                  classDefeito,
-                  versaoBaseDados,
-                  versaoSoftware,
-                  logsAnexado,
-                  equipamento,
-                  equipPosicao,
-                  partNumber,
-                  serialNumber,
-                  tituloOcorrencia,
-                  descricaoOcorrencia,
-                  nomeRelator,
-                  posGradRelator,
-                  posGradResponsavel,
-                  nomeResponsavel,
-                  idRelator: usuario._id
-          }, );
-          roni()
-      }catch (response){
-        setErrorMessage(response.data.msg);
-      }
-      setLoading(false);
-    }
-
-    async function ValidarRo() {
-      setLoading(true)
-      try{
-        const response = await api.patch(`/ro/close/${_id}`,
-        {
-          validacaoFechamentoRo,
-          justificativaFechamento
-          }, );
-        roni()
-      }catch (response){
-        setErrorMessage(response.data.msg);
-      }
-      setLoading(false);
-    }
-
-    function formatarData(dataInput: String){
-      const data = new Date(dataInput)
-      const dia  = data.getDate().toString()
-      const diaF = (dia.length == 1) ? '0' + dia : dia
-      const mes  = (data.getMonth() + 1).toString()
-      const mesF = (mes.length == 1) ? '0' + mes : mes
-      const anoF = data.getFullYear()
-      const hora = data.getHours()
-      const minuto = data.getMinutes()
-      const segundo = data.getSeconds()
-      return diaF + "/" + mesF + "/" + anoF + " às " + hora + ":" + minuto + ":" + segundo
-    }
+  
     async function roni () {
         toast.success('Atualização concluida com sucesso', {
           position: "bottom-right",
@@ -338,6 +276,7 @@ const EditaRos = () => {
         {
         !!errorMessage && 
         <>
+       { console.log(descricao + dataRegistro + logsAnexado + nomeRelator + nomeResponsavel + ro)}
         <h1 className="text-red-900">{errorMessage}</h1>
           </>
         }
@@ -681,7 +620,7 @@ const EditaRos = () => {
     <option disabled selected>
     Selecione
   </option>
-      { usuarios && usuarios.map((relator) => (
+      { usuarios && usuarios.map((relator : any) => (
       <option key={relator._id} value={relator._id}>{relator.nome}</option>
       ))}
     </select>
@@ -703,7 +642,7 @@ const EditaRos = () => {
         Validação :
       </label>
       <select
-      disabled={usuario.perfil === "cliente" ? false : true}
+      disabled={usuario?.perfil === "cliente" ? false : true}
       name="validacao"
       className="border-b border-gray-400 focus:border-primary focus:outline-none px-2 py-0 flex-grow"
       onChange={e => setValidacaoFechamentoRo(e.target.value)}

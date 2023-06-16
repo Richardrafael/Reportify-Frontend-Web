@@ -8,11 +8,11 @@ function Perfil () {
 
     const { usuario, signOut, updateEmail } = useAuth()
 
-    const [isEnabled, setIsEnabled] = useState(usuario.email_notificacao);
+    const [isEnabled, setIsEnabled] = useState(usuario?.email_notificacao);
 
     const toggleSwitch = async () => {
         try {
-          const response = await api.patch('/notificacao/email', {id:usuario._id});
+           await api.patch('/notificacao/email', {id:usuario?._id});
           accept()
     
           updateEmail()
@@ -21,12 +21,15 @@ function Perfil () {
           console.error(error);
         }
         
-        setIsEnabled(previousState => !previousState);
+        setIsEnabled(previousState => {
+          // Lógica para atualizar o estado isEnabled
+          return previousState === undefined ? 'true' : undefined;
+        });
     }
 
     const accept = async () => {
         try {
-          await api.post('/notificacao/accept/', {id:usuario._id});
+          await api.post('/notificacao/accept/', {id:usuario?._id});
     
         } catch (error) {
           console.error(error);
@@ -40,13 +43,13 @@ function Perfil () {
             <div className="p-10 flex items-center flex-col">
                 <p className="text-3xl mb-5 font-black">Perfil</p>
                 <p className="text-xl mb-5 font-black">Informações do Usuário:</p>
-                <p className="mb-3"><span className="bold font-black">Nome: </span>{usuario.nome}</p>
-                <p className="mb-3"><span className="bold font-black">Email: </span>{usuario.email}</p>
-                <p className="mb-3"><span className="bold font-black">Perfil: </span>{usuario.perfil === "admin" ? "Administrador" : "Cliente"}</p>
-                <p className="mb-3"><span className="bold font-black">Empresa: </span>{usuario.empresa}</p>
-                <p className="mb-7"><span className="font-black">Contato da Empresa: </span>{usuario.contato_empresa}</p>
+                <p className="mb-3"><span className="bold font-black">Nome: </span>{usuario?.nome}</p>
+                <p className="mb-3"><span className="bold font-black">Email: </span>{usuario?.email}</p>
+                <p className="mb-3"><span className="bold font-black">Perfil: </span>{usuario?.perfil === "admin" ? "Administrador" : "Cliente"}</p>
+                <p className="mb-3"><span className="bold font-black">Empresa: </span>{usuario?.empresa}</p>
+                <p className="mb-7"><span className="font-black">Contato da Empresa: </span>{usuario?.contato_empresa}</p>
                 <p className="mb-3"><span className="font-black">Notificações por email: </span></p>
-                <Switch onChange={toggleSwitch} checked={isEnabled} />
+                <Switch onChange={toggleSwitch}  checked={isEnabled === 'true'}/>
                 <p onClick={signOut} className="mb-3 mt-7 text-blue-800 text-center cursor-pointer font-bold">Sair</p>
             </div>      
             </div>

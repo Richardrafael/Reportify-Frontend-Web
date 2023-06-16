@@ -1,34 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import Menu from "../../components/menus";
 import "../../styles/global.css";
 import "./contatos.css"
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LoaderRo from '../../components/loader/loaderRo';
 import { useAuth } from '../../contexts/auth';
 import api from '../../services/api';
 
 
+interface ro {
+  suporte : string,
+  relator : relator[],
+  tituloOcorrencia : string,
+  
+}
+
+interface relator {
+ id: string
+}
+
+
 function Contatos() {
 
   const { usuario } = useAuth();
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [ setErrorMessage] = useState(null);
   const navigation = useNavigate()
-  const [myRos, setMyRos] = useState();
+  const [myRos, setMyRos] = useState<ro[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-         if (usuario.perfil == "admin") {
-          const response = await api.get('/ro/atribuido/' + usuario._id);
+         if (usuario?.perfil == "admin") {
+          const response : any = await api.get('/ro/atribuido/' + usuario?._id);
           setMyRos(response.data);
       }else{
-        const response2 = await api.get('/ro/relator/' + usuario._id);
+        const response2 : any = await api.get('/ro/relator/' + usuario?._id);
         setMyRos(response2.data);
         console.log(response2.data)
       }
-    } catch (response) {
-      setErrorMessage(response.data.msg);
+    } catch (response : any) {
+      console.log(response.data.msg);
     }
     setLoading(false);
   })();
@@ -59,9 +71,9 @@ function Contatos() {
     
     <div id="conteudo2">
 
-    {  usuario.perfil == 'admin' ? (
+    {  usuario?.perfil == 'admin' ? (
       <>
-        {myRos && !loading ? myRos.map((ro) => (
+        {myRos && !loading ? myRos.map((ro : any) => (
           <div id = "mensagens" key={ro._id}>
             <div className='flex flex-row cursor-pointer' onClick={() => { ro.relator.id ?  handlePress(ro.relator.id._id) : error()}}>
               <div>
@@ -84,7 +96,7 @@ function Contatos() {
       </>
         ) : (
           <>
-          {myRos && !loading ? myRos.map((ro) => (
+          {myRos && !loading ? myRos.map((ro : any) => (
           <div id = "mensagens" key={ro._id}>
             <div className='flex flex-row cursor-pointer' onClick={() => { ro.suporte  && ro.suporte.colaboradorIACIT.id ?  handlePress(ro.suporte.colaboradorIACIT.id._id) : esperar()}}>
               <div>

@@ -3,24 +3,23 @@ import Menu from "../../components/menus";
 import "./cadastro.css"
 import Loader from "../../components/loader";
 import api from "../../services/api";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/auth";
-// import { Redirect } from 'react-router-dom';
-import { redirect } from "react-router-dom";
 import LoaderRo from "../../components/loader/loaderRo";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import Alert from "@mui/material/Alert";
-// import BasicAlerts from "../../components/Alertas";
-// import Alert from '@mui/material/Alert';
-// import Stack from '@mui/material/Stack';
+
+
+// interface aa {
+//   _id : string
+// }
 
 function CadastroRo () {
   const { usuario } = useAuth();
   const [contrato, setContrato] = useState('');
-  const [fase, setFase] = useState('');
+  const [fase] = useState('');
   const [orgao, setOrgao] = useState('');
-  const [relator, setRelator] = useState('');
+  const [relator] = useState('');
   const [posGradRelator, setPosGradRelator] = useState('');
   const [responsavel, setResponsavel] = useState('');
   const [posGradResponsavel, setPosGradResponsavel] = useState('');
@@ -35,22 +34,22 @@ function CadastroRo () {
   const [descricao, setDescricao] = useState('');
   const [titulo, setTitulo] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
-  const [logsAnexados, setLogsAnexados] = useState("");
+  // const [logsAnexados, setLogsAnexados] = useState("");
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
   const [enviado , setEnviado] = useState(false)
   // const navigate = useNavigate
   
   const [usuarios, setUsuarios] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(usuario._id);
+  const [selectedUser, setSelectedUser] = useState(usuario?._id);
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get('/usuario');
+        const response :any = await api.get('/usuario');
 
         setUsuarios(response.data);
         setLoading1(false);
-      } catch (response) {
+      } catch (response : any) {
         console.log(response.data.msg);
       }
     })();
@@ -68,7 +67,7 @@ function CadastroRo () {
       data.append('contrato', contrato);
       data.append('fase', fase);
       data.append('orgao', orgao);
-      data.append('idRelator', selectedUser);
+      data.append('idRelator', String(selectedUser));
       data.append('nomeRelator', relator);
       data.append('posGradRelator', posGradRelator);
       data.append('nomeResponsavel', responsavel);
@@ -78,7 +77,7 @@ function CadastroRo () {
         data.append('classDefeito', 'software');
         data.append('versaoBaseDados', versaoBaseDados);
         data.append('versaoSoftware', versaoSoftware);
-        data.append( 'anexo' , logsAnexados);
+        // data.append( 'anexo' , logsAnexados);
 
       } else if (hardwareChecked) {
         data.append('classDefeito', 'hardware');
@@ -93,9 +92,9 @@ function CadastroRo () {
       }
       data.append('tituloOcorrencia', titulo);
       
-      const response = await api.post('/ro', data, {headers: {'Content-Type': 'multipart/form-data'}})
+     await api.post('/ro', data, {headers: {'Content-Type': 'multipart/form-data'}})
       roni()
-    } catch (response) {
+    } catch (response : any) {
       if (response && response.data && response.data.msg) {
         setErrorMessage(response.data.msg);
         console.log(response.data.msg)
@@ -202,13 +201,13 @@ return(
       <select
       name="Relator"
       className="border-b border-gray-400 focus:border-primary focus:outline-none px-2 py-0 flex-grow"
-      onChange={e => setSelectedUser(e.target.value)}
+      onChange={e => setSelectedUser(Number(e.target.value))}
       id="Relator"
       >
     <option disabled selected>
     Selecione
   </option>
-      { usuarios && usuarios.map((relator) => (
+      { usuarios && usuarios.map((relator : any) => (
       <option key={relator._id} value={relator._id}>{relator.nome}</option>
       ))}
     </select>
@@ -356,7 +355,7 @@ return(
        />
      </div>
      {/* { usuario && usuario.perfil === 'cliente' && */}
-     <div className="flex mb-4">
+     {/* <div className="flex mb-4">
      <label htmlFor="log_anexados" className="block text-gray-700 font-bold w-1/4">
        Logs Anexos
      </label>
@@ -364,10 +363,14 @@ return(
        type="file"
        id="log_anexados"
        name=""
-       onChange={(event) => setLogsAnexados(event.target.files[0])}
+       onChange={(event) => {
+        const file = event.target.files[0];
+        setLogsAnexados(file);
+        // Realize qualquer lógica adicional com o arquivo, se necessário
+      }}
        className="border-b border-gray-400 focus:border-primary focus:outline-none px-2 py-0 flex-grow"
        />
-     </div>
+     </div> */}
      {/* } */}
       </>
     )

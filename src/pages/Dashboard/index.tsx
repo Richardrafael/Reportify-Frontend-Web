@@ -4,48 +4,62 @@ import "./dashboard.css"
 import api from "../../services/api";
 import 'react-toastify/dist/ReactToastify.css';
 import { VictoryPie, VictoryTooltip } from 'victory'
-import Loader from "../../components/loader";
 import LoaderRo from "../../components/loader/loaderRo";
+
+interface chart {
+  perfil : string,
+}
+
+interface aahartPie {
+  id: string;
+  label: string;
+  value: any;
+  color: string;
+}
+
+interface Usuario {
+  id: string;
+  nome: string;
+}
 
 function Dashboard () {
   const [loading, setLoading] = useState(true)
-  const [chartData, setChartData] = useState([])
-  const [chartDataLine, setChartDataLine] = useState([])
-  const [selected, setSelected] = useState('')
+  const [chartData, setChartData] = useState<aahartPie[]>([])
+  // const [chartDataLine, setChartDataLine] = useState([])
+  const [selected] = useState('')
   const [date, setDate] = useState('')
   const [dates, setDates] = useState([])
-  const [usuario, setUsuario] = useState()
-  const [usuarios, setUsuarios]= useState()
+  const [usuario, setUsuario] = useState<string | undefined>(undefined);
+
+  const [usuarios, setUsuarios]= useState<Usuario[]>([])
   const [totalROs, setTotalROS] = useState("")
 
-  function clickCard(id: string) {
-    setSelected(prev => prev === id ? "" : id)
-  }
+  
 
   useEffect(() => {
     (async () => {
       try {
         if (!date) {
-          const response = await api.get('/dashboard/dates');
+          const response : any = await api.get('/dashboard/dates');
           setDates(response.data);
           setDate(response.data[0])
         }
 
         if (!usuario) {
-          const response2 = await api.get('/usuario');
-          const list = response2.data
-          list.unshift({_id: "geral", nome: "Geral"})
+          const response2 : any = await api.get('/usuario');
+          const list : any = response2.data
+          list.unshift({ _id: "geral", nome: "Geral" } as unknown as chart[] ) 
           setUsuarios(list)
           setUsuario(response2.data[0]._id)
         }
 
         if (date && usuario) {
           const response3 = await api.get('/dashboard/data/' + date + '/' + usuario );
-          const data = response3.data
+          const data : any = response3.data
 
           setTotalROS(String(data.total))
 
-          const chartPie = [{
+          const chartPie =  [{
             id: "1",
             label: "Sem tratamento",
             value: data.aberto,
@@ -66,8 +80,8 @@ function Dashboard () {
 
           setChartData(chartPie)
         }
-      } catch (response) {
-        Alert.alert(response.data.msg);
+      } catch (response: any) {
+        alert(response.data.msg);
       }
       setLoading(false)
     })();
@@ -112,7 +126,7 @@ function Dashboard () {
                     id="usuario"
                     value={usuario}
                   >
-                  {usuarios && usuarios.map((usuario) => (
+                  {usuarios && usuarios.map((usuario : any) => (
                     <option value={usuario._id} key={usuario._id}>
                       {usuario.nome}
                     </option>
@@ -123,7 +137,7 @@ function Dashboard () {
                 <div className="w-5/12">
                 {chartData &&
                   (totalROs === "0") ? 
-                    <p className="text-base text-center my-2 font-black my-14">Não há nenhum dado de RO para este gráfico.</p>
+                    <p className="text-base text-center  font-black my-14">Não há nenhum dado de RO para este gráfico.</p>
                   :
                   <VictoryPie 
                     data={chartData}

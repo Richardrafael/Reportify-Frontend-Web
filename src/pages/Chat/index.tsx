@@ -6,6 +6,19 @@ import { useAuth } from '../../contexts/auth';
 import api from '../../services/api';
 import LoaderRo from '../../components/loader/loaderRo';
 
+
+interface a {
+  conteudo : string,
+  _id : string
+  destinatario : string
+  remetente : string
+
+}
+
+interface destina {
+  nome : string
+}
+
 const Chat: React.FC = () => {
   const { id } = useParams()
   
@@ -13,9 +26,9 @@ const Chat: React.FC = () => {
 
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [destinatario, setDestinatario] = useState();
-  const [messages, setMessages] = useState([
+  // const [, setErrorMessage] = useState('');
+  const [destinatario, setDestinatario] = useState<destina>();
+  const [messages, setMessages] = useState<a[]>([
     // { content: 'Olá!', sender: 'user' },
     // { content: 'Olá! Como posso ajudar?', sender: 'bot' },
     // { content: 'Estou com um problema no meu pedido.', sender: 'user' },
@@ -26,16 +39,16 @@ const Chat: React.FC = () => {
   useEffect(()=>{
     (async () => {
       try {
-        const response = await api.get(`/mensagem/${usuario._id}/${id}/`)
+        const response : any = await api.get(`/mensagem/${usuario?._id}/${id}/`)
         setMessages(response.data.reverse())
 
-        const response2 = await api.get(`/usuario/${id}/`)
+        const response2 : any = await api.get(`/usuario/${id}/`)
         setDestinatario(response2.data)
 
-        let objDiv = document.getElementById("scroll");
+        let objDiv : any = document.getElementById("scroll");
         objDiv.scrollTop = objDiv.scrollHeight;
-      } catch (response) {
-        setErrorMessage(response.data.msg);
+      } catch (response : any) {
+        console.log(response.data.msg);
       }
       setLoading(false)
     })();
@@ -47,20 +60,20 @@ const Chat: React.FC = () => {
 
   const handleSendMessage = async () => {
     if (inputText.trim() !== '') {
-      const newMessage = { _id: String(count + 1), conteudo: inputText, remetente: {_id: usuario._id}, destinatario: {_id: id}};
+      const newMessage : any = { _id: String(count + 1), conteudo: inputText, remetente: {_id: usuario?._id}, destinatario: {_id: id}};
       setCount(prev => prev + 1)
       console.log(newMessage)
       setMessages([...messages, newMessage]);
       setInputText('');
       try {
-        await api.post('/mensagem/', {conteudo: inputText, remetente: usuario._id, destinatario: id})
-      } catch (response) {
-        setErrorMessage(response.data.msg)
+        await api.post('/mensagem/', {conteudo: inputText, remetente: usuario?._id, destinatario: id})
+      } catch (response : any) {
+        console.log(response.data.msg)
       }
     }
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event : any) => {
     if (event.key === 'Enter') {
       handleSendMessage();
     }
@@ -84,10 +97,10 @@ const Chat: React.FC = () => {
          <div className="messages-container" id="scroll">
           {
             !loading ? <>
-              {messages.map((message) => (
+              {messages.map((message : any) => (
                 <div
                     key={message._id}
-                    className={`message ${message.remetente._id === usuario._id ? 'user' : 'bot'}`}
+                    className={`message ${message.remetente._id === usuario?._id ? 'user' : 'bot'}`}
                 >
                     {message.conteudo}
                 </div>

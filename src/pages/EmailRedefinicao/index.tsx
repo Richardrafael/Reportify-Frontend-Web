@@ -14,10 +14,10 @@ function emailRedefinicao() {
   const enviarEmail = async() => {
     setLoading(true);
       try {
-        const response = await api.post('/usuario/emailRedefinicao', { email });
+        const response : any = await api.post('/usuario/emailRedefinicao', { email });
 
         navigate('/login', {state: {msg: response.data.msg}})
-      } catch (response) {
+      } catch (response : any) {
         setErrorMessage(response.data.msg);
       }
     setLoading(false);
@@ -35,7 +35,7 @@ function emailRedefinicao() {
         <label htmlFor="email" className="block text-gray-700 font-bold">
           E-mail:
         </label>
-        <input className="p-2 mt-2 w-full ml-10 items-center bg-blue-300 ml-4 hover:bg-blue-400 hover:ring-blue-500  ring-offset-0 font-black ring ring-black  p-1 text-white text-md rounded-xl" type="email" value={email} onChange={(e) => setEmail(e.target.value)}  />
+        <input className="p-2 mt-2 w-full ml-10 items-center bg-blue-300 hover:bg-blue-400 hover:ring-blue-500  ring-offset-0 font-black ring ring-black   text-white text-md rounded-xl" type="email" value={email} onChange={(e) => setEmail(e.target.value)}  />
           {
             !loading ?
               (
